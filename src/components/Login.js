@@ -24,6 +24,8 @@ function Login() {
               if (res.data.success) {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("role", res.data.role);
+                localStorage.setItem("userName", res.data.name || email.split("@")[0]);
+                localStorage.setItem("userEmail", email);
 
         toast.success("Login successful!");
         

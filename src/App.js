@@ -16,6 +16,8 @@ import CreateOrder from "./pages/CreateOrder";
 
 function App() {
   const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+  
   return (
     <div>
       <Navbar />
@@ -29,12 +31,12 @@ function App() {
         <Route path="/benefits" element={<Benefits />} />
         <Route path="/recipes" element={<Recipe />} />
         <Route path="/sustainability" element={<Sustainability />} />
-        {/* <Route path="/my-orders" element={<MyOrders />} /> */}
-        <Route path="/orders" element={role==="admin" ? <AdminOrders /> :<MyOrders/>} />
         <Route path="/create-order" element={<CreateOrder />} />
+        {token && role === "admin" && <Route path="/orders" element={<AdminOrders />} />}
+        {token && role !== "admin" && <Route path="/my-orders" element={<MyOrders />} />}
       </Routes>
       <ToastContainer position="top-center" />
-    </div>
+    </div>  
   );
 }
 

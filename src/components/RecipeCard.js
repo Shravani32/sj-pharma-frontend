@@ -1,12 +1,19 @@
 export default function RecipeCard({ recipe }) {
   return (
-    <article className="border rounded-lg overflow-hidden hover:shadow-md transition">
-      <div className="h-40 bg-gray-100"></div>
-      <div className="p-4">
-        <h3 className="font-semibold">{recipe.title}</h3>
-        <p className="text-sm text-gray-600 mt-1">{recipe.blurb}</p>
-        <button className="mt-3 text-sm underline">View Recipe</button>
-      </div>
-    </article>
+    <div className="flex flex-col h-full">
+      <div className="h-48 rounded-[2rem] bg-[#0b0a08] border border-white/10 mb-6" />
+
+      <h3 className="text-xl font-semibold tracking-wide">
+        {recipe.title}
+      </h3>
+
+      <p className="mt-3 text-sm text-neutral-400">
+        {recipe.blurb}
+      </p>
+
+      <button className="mt-auto pt-6 text-sm tracking-widest text-[#d4a373] hover:underline">
+        VIEW RECIPE
+      </button>
+    </div>
   );
 }

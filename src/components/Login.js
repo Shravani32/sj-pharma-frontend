@@ -1,62 +1,107 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import ragiBg from "../assets/ragi-bg.mp4";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-    const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
-    const navigate=useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4000/api/auth/login", {
+        email,
+        password,
+      });
 
-    const handleSubmit=async (e)=>{
-        e.preventDefault();
-        console.log("requested");
-
-        try{
-             const res=await axios.post("http://localhost:4000/api/auth/login",{
-                email:email,
-                password:password
-             })
-
-             console.log(res);
-
-              if (res.data.success) {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("role", res.data.role);
-                localStorage.setItem("userName", res.data.name || email.split("@")[0]);
-                localStorage.setItem("userEmail", email);
-
-        toast.success("Login successful!");
-        
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+        toast.success("Welcome back 🌾");
         navigate("/");
-
       } else {
-        toast.error(res.data.message || "Login failed");
+        toast.error("Invalid credentials");
       }
-        }
-
-        catch(err){
-           toast.error(err.response?.data?.message || "Login failed!", { position: "top-center" });
-        }
+    } catch {
+      toast.error("Login failed");
     }
+  };
 
   return (
+    <div className="relative min-h-screen overflow-hidden">
 
-<div className="flex flex-col items-center justify-center h-screen">
-  <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold text-gray-900 mb-4">Login</h2>
-    <form className="flex flex-col" onSubmit={handleSubmit}>
-      <input type="email" className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Email address" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
-      <input type="password" className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
-     
-      <button type="submit" className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150">Login</button>
-    </form>
-  </div>
-</div>
+      {/* 🎥 Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={ragiBg} type="video/mp4" />
+      </video>
 
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-[#2a1e17]/80 backdrop-blur-sm" />
 
-  )
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+
+        <div className="max-w-md w-full bg-[#3a2a22]/80 backdrop-blur-xl 
+                        border border-[#5a4338] rounded-3xl p-8 shadow-2xl">
+
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-[#f5efe9]">
+              Welcome Back
+            </h1>
+            <p className="text-sm text-[#d6c6bb] mt-2">
+              Pure nutrition, honestly crafted
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-[#2a1e17]/80 border border-[#6b4f40]
+                         text-[#f5efe9] rounded-xl px-4 py-3
+                         focus:outline-none focus:ring-1 focus:ring-[#a27c63]"
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-[#2a1e17]/80 border border-[#6b4f40]
+                         text-[#f5efe9] rounded-xl px-4 py-3
+                         focus:outline-none focus:ring-1 focus:ring-[#a27c63]"
+              required
+            />
+
+            <button
+              type="submit"
+              className="w-full mt-4 py-3 rounded-xl font-semibold
+                         bg-[#a27c63] text-[#2a1e17]
+                         hover:bg-[#8e6952] transition"
+            >
+              Sign In
+            </button>
+          </form>
+
+          <p className="text-xs text-center text-[#ccb9ac] mt-6">
+            Stone-ground · Sustainable · Traceable
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
 }
 
 export default Login;

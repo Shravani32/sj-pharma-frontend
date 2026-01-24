@@ -18,9 +18,15 @@ function Login() {
       });
 
       if (res.data.success) {
+        // persist auth + profile data for navbar/routing
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", res.data.role);
+        localStorage.setItem("userName", res.data.name);
+        localStorage.setItem("userEmail", email);
+
+        const target = res.data.role === "admin" ? "/orders" : "/my-orders";
         toast.success("Welcome back 🌾");
-        navigate("/");
+        navigate(target);
       } else {
         toast.error("Invalid credentials");
       }

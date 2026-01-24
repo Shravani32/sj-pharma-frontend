@@ -21,6 +21,13 @@ function CreateOrder() {
   const [useSavedAddress, setUseSavedAddress] = useState(false);
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "admin") {
+      toast.info("Admins can only manage orders");
+      navigate("/orders", { replace: true });
+      return;
+    }
+
     // fetch available flavors (products) and load any saved address
     axios
       .get("http://localhost:4000/api/products")
@@ -37,7 +44,7 @@ function CreateOrder() {
       setAddress(parsed);
       setUseSavedAddress(true);
     }
-  }, []);
+  }, [navigate]);
 
   const handleAddToCart = () => {
     if (!selectedProduct) {
